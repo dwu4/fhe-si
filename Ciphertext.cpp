@@ -120,17 +120,25 @@ Ciphertext &Ciphertext::ByteDecomp() {
   return *this;
 }
 
-Ciphertext &Ciphertext::operator+=(const Ciphertext &other_) {
-  const Ciphertext &other = (const Ciphertext &)other_;
-  
+Ciphertext &Ciphertext::operator+=(const Ciphertext &other) {  
+  assert(scaledUp == other.scaledUp);
+
   if (!scaledUp) {
-    for (unsigned i = 0; i < parts.size(); i++) {
+    unsigned i = 0;
+    for (; i < parts.size() && i < other.parts.size(); i++) {
       parts[i] += other.parts[i];
       ReduceCoefficients(parts[i].poly, context->logQ);
     }
+    for (; i < other.parts.size(); i++) {
+      parts.push_back(other.parts[i]);
+    }
   } else{
-    for (unsigned i = 0; i < tProd.size(); i++) {
+    unsigned i = 0;
+    for (; i < tProd.size() && i < other.tProd.size(); i++) {
       tProd[i] += other.tProd[i];
+    }
+    for (; i < other.tProd.size(); i++) {
+      tProd.push_back(other.tProd[i]);
     }
   }
   return *this;
@@ -156,8 +164,7 @@ Ciphertext &Ciphertext::operator+=(const ZZ_pX &other) {
   return operator+=(to_ZZX(other));
 }
 
-Ciphertext &Ciphertext::operator*=(const Ciphertext &other_) {
-  const Ciphertext &other = (const Ciphertext &)other_;
+Ciphertext &Ciphertext::operator*=(const Ciphertext &other) {
   // Convert from coefficient to DoubleCRT
   vector<DoubleCRT> c1(parts.size()), c2(other.parts.size());
   for (unsigned i = 0; i < parts.size(); i++) {
@@ -208,6 +215,12 @@ void Ciphertext::ScaleDown() {
   }
   scaledUp = false;
   tProd.clear();
+}
+
+void Ciphertext::SetTensorRepresentation(vector<DoubleCRT> &repr) {
+  parts.clear();
+  swap(tProd, repr);
+  scaledUp = true;
 }
 
 void Ciphertext::Clear() {
@@ -261,8 +274,7 @@ Ciphertext &Ciphertext::operator>>=(long k) {
   return *this;
 }
 
-Ciphertext &Ciphertext::operator=(const Ciphertext &other_) {
-  const Ciphertext &other = (const Ciphertext &)other_;
+Ciphertext &Ciphertext::operator=(const Ciphertext &other) {
   this->context = other.context;
   this->parts = other.parts;
   this->tProd = other.tProd;

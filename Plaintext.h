@@ -47,6 +47,7 @@ class Plaintext {
     
     void EmbedInSlots(const vector<ZZ_pX> &msgs, bool onlyUsable = true);
     void DecodeSlots(vector<ZZ_pX> &msgBatch, bool onlyUsable = true);
+    void DecodeSlot(ZZ_pX &val, unsigned slot);
     
     Plaintext &operator=(const Plaintext &other);
     

@@ -125,8 +125,12 @@ void PlaintextSpace::DecodeSlots(vector<ZZ_pX> &msgBatch, const ZZ_pX &msg,
   msgBatch.resize(totalSlots);
   for (unsigned i = 0; i < totalSlots; i++) {
     if (onlyUsable && i >= usableSlots) break;
-    rem(msgBatch[i], msg, *factors[i]);
+    DecodeSlot(msgBatch[i], msg, i);
   }
+}
+
+void PlaintextSpace::DecodeSlot(ZZ_pX &val, const ZZ_pX &msg, unsigned ind) const {
+  rem(val, msg, *factors[ind]);
 }
 
 void PlaintextSpace::FrobeniusMap(ZZ_pX &poly, long k) {

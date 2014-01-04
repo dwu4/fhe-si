@@ -19,6 +19,7 @@ class PlaintextSpace {
     
     void EmbedInSlots(ZZ_pX &embedded, const vector<ZZ_pX> &msgs, bool onlyUsable = true) const;
     void DecodeSlots(vector<ZZ_pX> &msgBatch, const ZZ_pX &msg, bool onlyUsable = true) const;
+    void DecodeSlot(ZZ_pX &val, const ZZ_pX &msg, unsigned ind) const;
   private:
     ZZ p;
     unsigned generator;

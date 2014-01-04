@@ -86,6 +86,7 @@ class Ciphertext {
   
   void Clear();
   void ScaleDown();
+  void SetTensorRepresentation(vector<DoubleCRT> &repr);
 
   CiphertextPart GetPart(unsigned ind) const;
   CiphertextPart &operator[](unsigned ind);

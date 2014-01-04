@@ -31,6 +31,10 @@ void Plaintext::DecodeSlots(vector<ZZ_pX> &msgBatch, bool onlyUsable) {
   context.GetPlaintextSpace().DecodeSlots(msgBatch, message, onlyUsable);
 }
 
+void Plaintext::DecodeSlot(ZZ_pX &val, unsigned slot) {
+  context.GetPlaintextSpace().DecodeSlot(val, message, slot);
+}
+
 ostream &operator<<(ostream &os, const Plaintext &ptxt) {
   return (os << ptxt.message);
 }
