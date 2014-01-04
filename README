@@ -1,0 +1,102 @@
+This is an implementation of Brakerski's somewhat homomorphic encryption
+system (http://eprint.iacr.org/2012/078.pdf). Much of the algebraic and number
+theoretic facilities are taken from HElib (https://github.com/shaih/HElib).
+This library leverages the NTL library over GMP, and is distributed under the
+terms of the GNU General Public License (GPL).
+
+A more complete description of the implementation details is available here:
+http://cs.stanford.edu/~dwu4/FHE-SI_Report.pdf.
+
+===========
+Basic Setup
+=========== 
+
+To compile the system, simply run make in the main directory. Note that you
+will need to install the NTL library prior to compiling and running the
+system. NTL is available for download at http://www.shoup.net/ntl/. If
+compilation fails due to NTL (missing header files or linker errors), you will
+have to modify the Makefile accordingly. If the header files are not present
+in a default directory, adding -I/path/to/NTL/header/files to the CFLAGS
+should fix the problem. If there is a linker problem, add the path to the NTL
+library to LDPATH: -L/path/to/NTL/library.
+
+===================
+Running Basic Tests
+===================
+
+Several test programs are included to illustrate usage of the system. We describe them below.
+
+Test_AddMul: ./tests/TestAddMul_x logQ p generator [seed]
+---------------------------------------------------------
+
+This test exercises the basic homomorphic operations of the Brakerski system.
+The first three parameters pertain to the SWHE system:
+  logQ: the ciphertext modulus to use (q = 2^logQ)
+  p: the plaintext modulus to use (should be a safe prime)
+  generator: the generator for the plaintext space (a generator 
+             of the multiplicative group Z/(p-1)Z)
+
+If a seed is not provided, Test_AddMul will test the system against a series
+of randomly generated test cases. The test will report whether any of the test
+cases failed. This can be used to verify that the homomorphic operations of
+the system are properly behaving. If a seed is provided, the will just run the
+test using the specified seed for the random number generator. This can be
+used to debug specific test cases.
+
+Small parameters that demonstrate the basic functionality are:
+  ./tests/TestAddMul_x 80 23 7
+Note that these parameters do not constitute a secure choice of parameters. More
+information on choosing parameters to guarantee a certain level of security may 
+be found here: http://cs.stanford.edu/~dwu4/FHE-SI_Report.pdf.
+
+Test_General: ./tests/Test_General_x
+-----------------------------------
+
+This is a test that is similar to the Test_General from HELib. Not all of the
+functionality supported by HELib is present in our implementation. It should,
+however, demonstrate some of the facilities that is supported by our
+implementation.
+
+Test_Regression: ./tests/Test_Regression_x datafile p generator
+---------------------------------------------------------------
+
+This test showcases running linear regression on encrypted data. The datafile
+is the path to an input data file. The remaining parameters pertain to the
+SWHE. As in Test_AddMul, the parameter p is the plaintext modulus and the
+parameter generator is a generator for the plaintext space. Again, p should be
+a safe prime.
+
+The datafile consists of the data points that we regress over. The datafile
+format is specified as follows. The first line consists of two numbers,
+separated by a space. The first number is the dimension d and the second
+number specifies the number of points. What follows is a series of lines. Each
+of the subsequent lines contains d + 1 numbers. The first d values are the
+independent variables and the last value is the dependent variable.
+
+A Python script is provided to generate random data to run this test:
+
+  ./scripts/generateRandomData.py filename d N [nFiles]
+
+The filename specifies the output datafile. The next parameter d specifies the
+data dimension and lastly, N specifies the number of data points to generate.
+The optional nFiles parameter allows you to split the data points into
+multiple files, for instance, to perform parallel execution of linear
+regression.
+
+More concrete details on regression analysis is provided in the report:
+http://cs.stanford.edu/~dwu4/FHE-SI_Report.pdf.
+
+Test_Statistics: ./tests/Test_Statistics_x datafile p generator
+---------------------------------------------------------------
+
+This test demonstrates computing basic statistics on encrypted data. The
+parameters are the same as that of Test_Regression. More detailed information
+is available in the report.
+
+=============
+Serialization
+=============
+
+Public keys, secret keys, and ciphertexts are all serializable and can be
+saved to and loaded from files. Refer to "Serialization.h" to see how this can
+be done.
