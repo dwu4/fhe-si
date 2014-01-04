@@ -117,7 +117,7 @@ Ciphertext &Ciphertext::ByteDecomp() {
     decompPosition -= context->ndigits;
     ByteDecompPart(decompPosition, *rit);
   }
-  return (Ciphertext&)*this;
+  return *this;
 }
 
 Ciphertext &Ciphertext::operator+=(const Ciphertext &other_) {
@@ -133,7 +133,7 @@ Ciphertext &Ciphertext::operator+=(const Ciphertext &other_) {
       tProd[i] += other.tProd[i];
     }
   }
-  return *(Ciphertext* const)this;
+  return *this;
 }
 
 Ciphertext &Ciphertext::operator+=(const ZZX &other) {
@@ -149,7 +149,7 @@ Ciphertext &Ciphertext::operator+=(const ZZX &other) {
   } else {
     tProd[0] += scaledConstant;
   }
-  return *(Ciphertext* const)this;
+  return *this;
 }
 
 Ciphertext &Ciphertext::operator+=(const ZZ_pX &other) {
@@ -181,11 +181,7 @@ Ciphertext &Ciphertext::operator*=(const Ciphertext &other_) {
   parts.clear();
   scaledUp = true;
 
-  return *(Ciphertext* const)this;
-}
-
-Ciphertext &Ciphertext::operator*=(Ciphertext &other) {
-  return operator*=((const Ciphertext &)other);
+  return *this;
 }
 
 void Ciphertext::ScaleDown() {
@@ -231,7 +227,7 @@ Ciphertext &Ciphertext::operator*=(long l) {
       tProd[i] *= l;
     }
   }
-  return *(Ciphertext* const)this;
+  return *this;
 }
 
 Ciphertext &Ciphertext::operator*=(const ZZX &other) {
@@ -245,7 +241,7 @@ Ciphertext &Ciphertext::operator*=(const ZZX &other) {
       tProd[i] *= otherCRT;
     }
   }
-  return *(Ciphertext * const)this;
+  return *this;
 }
 
 Ciphertext &Ciphertext::operator*=(const ZZ_pX &other) {
@@ -262,7 +258,7 @@ Ciphertext &Ciphertext::operator>>=(long k) {
       tProd[i] >>= k;
     }
   }
-  return *(Ciphertext* const)this;
+  return *this;
 }
 
 Ciphertext &Ciphertext::operator=(const Ciphertext &other_) {
@@ -271,7 +267,7 @@ Ciphertext &Ciphertext::operator=(const Ciphertext &other_) {
   this->parts = other.parts;
   this->tProd = other.tProd;
   this->scaledUp = other.scaledUp;
-  return *(Ciphertext* const)this;
+  return *this;
 }
 
 CiphertextPart Ciphertext::GetPart(unsigned ind) const {

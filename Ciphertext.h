@@ -77,7 +77,6 @@ class Ciphertext {
   Ciphertext &operator+=(const ZZ_pX &other);
   
   Ciphertext &operator*=(const Ciphertext &other);
-  Ciphertext &operator*=(Ciphertext &other);
   Ciphertext &operator*=(long l);
 
   Ciphertext &operator*=(const ZZX &other);
