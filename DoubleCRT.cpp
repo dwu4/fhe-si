@@ -192,7 +192,7 @@ double DoubleCRT::addPrimesAndScale(const IndexSet& s1)
     long f = rem(factor, qi);     // f = factor % qi
     vec_long& row = map[i];
     // scale row by a factor of f modulo qi
-    mulmod_precon_t bninv = PrepMulModPrecon(f, qi, 1.0/(double)qi);
+    mulmod_precon_t bninv = PrepMulModPrecon(f, qi);
     for (long j=0; j<phim; j++) 
       row[j] = MulModPrecon(row[j], f, qi, bninv);
   }

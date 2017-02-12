@@ -6,7 +6,7 @@ BUILD = build
 TESTS = tests
 
 LDPATH = -L/usr/lib/ -L$(CURDIR)/$(BUILD)
-LDLIBS = -lntl -lm
+LDLIBS = -lntl -lgmp -lm
 
 SRC =  PlaintextSpace.cpp CModulus.cpp FHEContext.cpp PAlgebra.cpp SingleCRT.cpp \
        DoubleCRT.cpp NumbTh.cpp bluestein.cpp IndexSet.cpp \
